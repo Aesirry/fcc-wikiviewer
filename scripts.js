@@ -1,18 +1,25 @@
-var muhquery;
-
-function findArticle(query){
-  $.getJSON("https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&grnnamespace=0&prop=extracts&exlimit=max&explaintext&exintro&gsrsearch=" + query + "&callback=?",
-function(data) {
-  for(var i = 0; i < 10; i++) {
-    var stuff = $("<p></p>").text(data.search[i].snippet);
-    $("#search-area").append(stuff);
-  }
-});
-}
-
-$(document).ready(function(){
-  $("button").click(function() {
-    query = $("#search").val();
-    findArticle(query);
+$(document).ready(function() {
+  $("button").click(function(event) {
+    event.preventDefault();
+    var url = "https://en.wikipedia.org/w/api.php?&callback=?";
+    $.getJSON(url, {
+      action: 'query',
+      format: 'json',
+      list :'search',
+      srsearch: $("input").val()
+    })
+      .done(function(data) {
+        console.log(data);
+        $("#results").empty();
+        $.each(data.query.search, function(i, item) {
+          var result = '<div class="panel panel-info">';
+          result += '<a href="https://en.wikipedia.org/wiki/' + item.title + '" target="_blank">';
+          result += '<div class="panel-heading">';;
+          result += '<h2 class="panel-title">' + item.title + '</h2></div>';
+          result += '<div class="panel-body">' + item.snippet + '</div>';
+          result += '</a></div>';
+          $("#results").append(result);
+      });
+    });
   });
 });
