@@ -13,11 +13,12 @@ $(document).ready(function() {
         $("#results").empty();
         $.each(data.query.search, function(i, item) {
           var result = '<div class="panel panel-info">';
+          result += '<div class="panel-heading">';
           result += '<a href="https://en.wikipedia.org/wiki/' + item.title + '" target="_blank">';
-          result += '<div class="panel-heading">';;
-          result += '<h2 class="panel-title">' + item.title + '</h2></div>';
+          result += '<h4>' + item.title + '</h4>' + '</a>';
+          result += '</div>';
           result += '<div class="panel-body">' + item.snippet + '</div>';
-          result += '</a></div>';
+          result += '</div>';
           $("#results").append(result);
       });
     });
